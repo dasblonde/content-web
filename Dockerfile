@@ -1,6 +1,9 @@
 FROM node:argon
 
-# NOTE: Create app directory
+# Need bower to install client side packages
+RUN npm install -g bower
+
+# Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
@@ -8,10 +11,13 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 RUN npm install
 
+# Install client side app dependencies
+COPY .bowerrc /usr/src/app
+COPY bower.json /usr/src/app
+RUN bower --allow-root install
+
 # Bundle app source
 COPY . /usr/src/app
-
-ENV CONTENT_API_URL http://api:3001
 
 EXPOSE 3000
 CMD [ "npm", "start" ]
