@@ -102,7 +102,7 @@ app.get('/api/stats', function (req, res) {
       return res.status(500).send(error);
     }
     else {
-      data.webTaskId = process.env.MESOS_TASK_ID || process.pid;
+      data.webTaskId = process.env.HOSTNAME || process.pid;
       return res.status(200).send(data);
     }
   });
